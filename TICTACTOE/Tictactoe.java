@@ -37,3 +37,65 @@ public class XandO extends JFrame {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new XandO());
     }
+        private void loadSound() {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("click.wav"));
+            clickSound = AudioSystem.getClip();
+            clickSound.open(audioInputStream);
+        } catch (Exception e) {
+            System.out.println("Sound file not found or cannot be played.");
+        }
+    }
+
+    private void playClickSound() {
+        if (clickSound != null) {
+            if (clickSound.isRunning()) clickSound.stop();
+            clickSound.setFramePosition(0);
+            clickSound.start();
+        }
+    }
+
+    private void createWelcomeScreen() {
+        JPanel welcomePanel = new JPanel();
+        welcomePanel.setLayout(new GridLayout(6, 1));
+        welcomePanel.setBackground(new Color(240, 248, 255)); // Soft background
+
+        JLabel title = new JLabel("🎉 Welcome to X and O Game 🎯", SwingConstants.CENTER);
+        title.setFont(new Font("Comic Sans MS", Font.BOLD, 22));
+        title.setForeground(new Color(199, 21, 133));
+
+        JTextField playerOneField = new JTextField();
+        playerOneField.setDocument(new JTextFieldLimit(16));
+        playerOneField.setToolTipText("Enter Player 1 Name");
+
+        JTextField playerTwoField = new JTextField();
+        playerTwoField.setDocument(new JTextFieldLimit(16));
+        playerTwoField.setToolTipText("Enter Player 2 Name");
+
+        JButton startButton = new JButton("Continue");
+        startButton.setBackground(new Color(218, 112, 214));
+        startButton.setForeground(Color.WHITE);
+        startButton.setFont(new Font("Arial", Font.BOLD, 16));
+
+        JLabel tipLabel = new JLabel("👥 Enter your names to begin!", SwingConstants.CENTER);
+        tipLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
+        tipLabel.setForeground(Color.DARK_GRAY);
+
+        welcomePanel.add(title);
+        welcomePanel.add(playerOneField);
+        welcomePanel.add(playerTwoField);
+        welcomePanel.add(tipLabel);
+        welcomePanel.add(startButton);
+
+        add(welcomePanel, BorderLayout.CENTER);
+        setVisible(true);
+
+        startButton.addActionListener(e -> {
+            playerOneName = playerOneField.getText().isEmpty() ? "Player 1" : playerOneField.getText();
+            playerTwoName = playerTwoField.getText().isEmpty() ? "Player 2" : playerTwoField.getText();
+            remove(welcomePanel);
+            drawGrid();
+            revalidate();
+            repaint();
+        });
+    }
