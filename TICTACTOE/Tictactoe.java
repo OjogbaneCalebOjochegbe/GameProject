@@ -154,3 +154,61 @@ public class XandO extends JFrame {
     String getScoreText() {
         return "📊 Score → " + playerOneName + ": " + playerOneScore + " | " + playerTwoName + ": " + playerTwoScore;
     }
+    void handleMove(JButton button, int position) {
+        if (!button.getText().equals("")) return;
+
+        if (isPlayerOneTurn) {
+            button.setText("X");
+            button.setForeground(Color.BLUE);
+            playerOne.add(position);
+            turnLabel.setText(playerTwoName + "'s Turn");
+            turnLabel.setForeground(Color.RED);
+        } else {
+            button.setText("O");
+            button.setForeground(Color.RED);
+            playerTwo.add(position);
+            turnLabel.setText(playerOneName + "'s Turn");
+            turnLabel.setForeground(new Color(0, 102, 204));
+        }
+
+        checkWin();
+        isPlayerOneTurn = !isPlayerOneTurn;
+    }
+
+    void checkWin() {
+        int[][] winCombos = {
+            {1, 2, 3}, {4, 5, 6}, {7, 8, 9},
+            {1, 4, 7}, {2, 5, 8}, {3, 6, 9},
+            {1, 5, 9}, {3, 5, 7}
+        };
+
+        for (int[] combo : winCombos) {
+            if (playerOne.contains(combo[0]) && playerOne.contains(combo[1]) && playerOne.contains(combo[2])) {
+                playerOneScore++;
+                JOptionPane.showMessageDialog(this, "🎉 " + playerOneName + " Wins!");
+                updateScore();
+                disableButtons();
+                return;
+            } else if (playerTwo.contains(combo[0]) && playerTwo.contains(combo[1]) && playerTwo.contains(combo[2])) {
+                playerTwoScore++;
+                JOptionPane.showMessageDialog(this, "🎉 " + playerTwoName + " Wins!");
+                updateScore();
+                disableButtons();
+                return;
+            }
+        }
+
+        if (playerOne.size() + playerTwo.size() == 9) {
+            JOptionPane.showMessageDialog(this, "🤝 It's a Draw!");
+        }
+    }
+
+    void updateScore() {
+        scoreLabel.setText(getScoreText());
+    }
+
+    void disableButtons() {
+        for (JButton button : buttons) {
+            button.setEnabled(false);
+        }
+    }
