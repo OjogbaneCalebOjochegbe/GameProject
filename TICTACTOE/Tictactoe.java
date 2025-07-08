@@ -99,3 +99,58 @@ public class XandO extends JFrame {
             repaint();
         });
     }
+     void drawGrid() {
+        myPanel.setLayout(new GridLayout(3, 3));
+        myPanel.setBackground(new Color(255, 239, 213));
+
+        for (int i = 0; i < 9; i++) {
+            JButton button = new JButton();
+            button.setFont(new Font("Comic Sans MS", Font.BOLD, 40));
+            button.setBackground(new Color(255, 182, 193));
+            final int index = i + 1;
+            button.addActionListener(e -> {
+                playClickSound();
+                handleMove(button, index);
+            });
+            buttons[i] = button;
+            myPanel.add(button);
+        }
+
+        turnLabel.setText(playerOneName + "'s Turn");
+        turnLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        turnLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        turnLabel.setForeground(new Color(0, 102, 204));
+
+        scoreLabel.setText(getScoreText());
+        scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        scoreLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
+        scoreLabel.setForeground(new Color(25, 25, 112));
+
+        restartButton.setFont(new Font("Arial", Font.BOLD, 16));
+        restartButton.setBackground(new Color(255, 105, 180));
+        restartButton.setForeground(Color.WHITE);
+        restartButton.setFocusPainted(false);
+        restartButton.setPreferredSize(new Dimension(200, 40));
+
+        JPanel topPanel = new JPanel(new GridLayout(2, 1));
+        topPanel.setBackground(new Color(255, 240, 245));
+        topPanel.add(turnLabel);
+        topPanel.add(scoreLabel);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        bottomPanel.setBackground(new Color(199, 21, 133));
+        bottomPanel.add(restartButton);
+
+        restartButton.addActionListener(e -> restartGame());
+
+        add(topPanel, BorderLayout.NORTH);
+        add(myPanel, BorderLayout.CENTER);
+        add(bottomPanel, BorderLayout.SOUTH);
+
+        setVisible(true);
+    }
+
+    String getScoreText() {
+        return "📊 Score → " + playerOneName + ": " + playerOneScore + " | " + playerTwoName + ": " + playerTwoScore;
+    }
