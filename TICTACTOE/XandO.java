@@ -17,7 +17,7 @@ public class XandO extends JFrame {
     int playerTwoScore = 0;
 
     JButton[] buttons = new JButton[9];
-    JPanel myPanel = new JPanel();
+    JPanel gridPanel = new JPanel();
     JLabel turnLabel = new JLabel();
     JLabel scoreLabel = new JLabel();
     JButton restartButton = new JButton("Restart Game");
@@ -100,8 +100,8 @@ public class XandO extends JFrame {
         });
     }
      void drawGrid() {
-        myPanel.setLayout(new GridLayout(3, 3));
-        myPanel.setBackground(new Color(255, 239, 213));
+        gridPanel.setLayout(new GridLayout(3, 3));
+        gridPanel.setBackground(new Color(255, 239, 213));
 
         for (int i = 0; i < 9; i++) {
             JButton button = new JButton();
@@ -113,7 +113,7 @@ public class XandO extends JFrame {
                 handleMove(button, index);
             });
             buttons[i] = button;
-            myPanel.add(button);
+            gridPanel.add(button);
         }
 
         turnLabel.setText(playerOneName + "'s Turn");
@@ -145,7 +145,7 @@ public class XandO extends JFrame {
         restartButton.addActionListener(e -> restartGame());
 
         add(topPanel, BorderLayout.NORTH);
-        add(myPanel, BorderLayout.CENTER);
+        add(gridPanel, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.SOUTH);
 
         setVisible(true);
