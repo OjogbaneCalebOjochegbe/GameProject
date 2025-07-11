@@ -224,7 +224,6 @@ public class XandO extends JFrame {
     }
 }
 
-// Helper Class for text input limitation
 class JTextFieldLimit extends javax.swing.text.PlainDocument {
     private int limit;
 
